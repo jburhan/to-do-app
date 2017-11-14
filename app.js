@@ -1,11 +1,13 @@
+let id = 0;
 
 function onReady(){
-  const toDos = [];
+  let toDos = [];
   //this is to access the HTML page
   const addToDoForm = document.getElementById('addToDoForm');
 
   // this is to update the array
   function createNewToDo () {
+    id++;
     // This is access the  text input
     const newToDoText = document.getElementById('newToDoText');
     //if empty string is put in, it should return false
@@ -14,7 +16,8 @@ function onReady(){
     // This is to add new to-do to the ToDos aray
     toDos.push({
       title : newToDoText.value,
-      complete: false
+      complete: false,
+      id: id
     });
     // this is to clear out the input box after each input
     newToDoText.value = '';
@@ -22,6 +25,13 @@ function onReady(){
     renderTheUI(toDos);
 
   };
+
+  function deleteTodo(toDoToDelete) {
+    toDos = toDos.filter(function(toDo) {
+      return toDoToDelete.id !== toDo.id;
+    })
+    renderTheUI(toDos);
+  }
 
   function renderTheUI(toDos) {
     const toDoList = document.getElementById('toDoList');
@@ -52,12 +62,7 @@ function onReady(){
 
       delli.addEventListener('click', event =>{
         event.preventDefault();
-        toDoList.removeChild(newLi);
-
-        // this is to take off the erased list
-        const index = toDos.indexOf(toDoList.newLi);
-        toDos.splice(index, 1);
-
+        deleteTodo(toDo);
       });
 
     });
